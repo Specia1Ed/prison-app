@@ -1,59 +1,31 @@
 import streamlit as st
-import sqlite3
 import pandas as pd
+import mysql.connector 
 
-# Database connection
-# @st.cache_resource
-# def get_connection():
-#     conn = sqlite3.connect("prison_management.db")
-#     return conn
 
-# def create_tables():
-#     conn = get_connection()
-#     cursor = conn.cursor()
+#Database connection
+@st.cache_resource
+def get_connection():
+    connection = mysql.connector.connect(
+    host='127.0.0.1',
+    user='root',
+    password='',
+    database='test2'
+    )
+    return connection
 
-#     cursor.execute('''CREATE TABLE IF NOT EXISTS prisoners (
-#         id INTEGER PRIMARY KEY,
-#         name TEXT NOT NULL,
-#         cell INTEGER,
-#         crime TEXT,
-#         sentence TEXT
-#     )''')
+def query_database(query, params=()):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    conn.commit()
+    return cursor
 
-#     cursor.execute('''CREATE TABLE IF NOT EXISTS staff (
-#         id INTEGER PRIMARY KEY,
-#         name TEXT NOT NULL,
-#         role TEXT
-#     )''')
-
-#     cursor.execute('''CREATE TABLE IF NOT EXISTS cells (
-#         id INTEGER PRIMARY KEY,
-#         occupancy INTEGER DEFAULT 0,
-#         capacity INTEGER DEFAULT 2
-#     )''')
-
-#     cursor.execute('''CREATE TABLE IF NOT EXISTS guns (
-#         id INTEGER PRIMARY KEY,
-#         model TEXT NOT NULL,
-#         assigned_to TEXT
-#     )''')
-
-#     conn.commit()
-
-# create_tables()
-
-# def query_database(query, params=()):
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute(query, params)
-#     conn.commit()
-#     return cursor
-
-# def fetch_data(query, params=()):
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute(query, params)
-#     return cursor.fetchall()
+def fetch_data(query, params=()):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    return cursor.fetchall()
 
 # Login page
 if "authenticated" not in st.session_state:
@@ -78,7 +50,7 @@ else:
 
     if menu == "Logout":
         st.session_state.authenticated = False
-        st.experimental_rerun()
+        #st.experimental_rerun()
 
     elif menu == "Dashboard":
         st.title("Dashboard")
