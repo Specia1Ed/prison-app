@@ -75,10 +75,11 @@ else:
         with st.expander("Add New Prisoner"):
             name = st.text_input("Name")
             cell = st.number_input("Cell ID", min_value=1)
+            id = st.number_input("ID", min_value=1000)
             crime = st.text_input("Crime Commited")
             sentence = st.number_input("Sentence", min_value=1)
             if st.button("Add Prisoner"):
-                query_database(text(f"INSERT INTO prisoner (name, cellid, CrimeCommited, SentenceDuration) VALUES ('{name}', '{cell}', '{crime}', '{sentence}')"))
+                query_database(text(f"INSERT INTO prisoner (id,name, cellid, CrimeCommited, SentenceDuration) VALUES ('{id}','{name}', '{cell}', '{crime}', '{sentence}')"))
                 st.success("Prisoner added successfully!")
 
     elif menu == "Manage Staff":
